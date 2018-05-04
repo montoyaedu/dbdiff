@@ -65,7 +65,11 @@ class dbdiff {
                 emit("%s %s %s nullable=%s", rsmd.getColumnName(i), rsmd.getColumnTypeName(i), rsmd.getColumnClassName(i), rsmd.isNullable(i));
             }
             while (rs.next()) {
-                emit("1", rs.getObject(1));
+                emit("begin row");
+                for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                    emit("\t%s = [%s]", rsmd.getColumnName(i), rs.getObject(i));
+                }
+                emit("end row");
             }
         }
         return 0;
